@@ -4,4 +4,4 @@ config:
    elastic_search_password:
    index_name: books
    google_books_api_url: https://www.googleapis.com/books/v1/volumes
-   google_books_api_key: AIzaSyCPv2bR41s9uawpIyirXLi6-2fwoLq9J9Y
+   google_books_api_key: 
