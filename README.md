@@ -10,11 +10,11 @@ This python code internally calls this endpoint - https://www.googleapis.com/boo
 
 ## Google Books Java Service
 
-This service exposed API using spring boot, spring webflux and enabled cors.
+This service exposed API using Spring Boot, Spring WebFlux and Enabled cors.
 
 ## Google Books Engine UI
 
-This is the Search Engine UI built with react js auto-complete and css. It calls the Java API endpoints, renders data on the UI.
+This is the Search Engine UI built with React JS auto-complete and CSS. It calls the Java API endpoints, renders data on the UI.
 
 
 
