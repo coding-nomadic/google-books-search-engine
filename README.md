@@ -12,6 +12,14 @@ This python code internally calls this endpoint - https://www.googleapis.com/boo
 
 This service exposed API using Spring Boot, Spring WebFlux from Elastic search index and with its search feature.
 
+```
+curl --location 'http://localhost:8080/api/v1/books?search=Harry Porter'
+```
+
+```
+curl --location 'http://localhost:8080/api/v1/books/fetchAllBooks
+```
+
 ## Google Books Engine UI
 
 This is the Search Engine UI built with React JS auto-complete and CSS. It calls the Java API endpoints, renders data on the UI.
