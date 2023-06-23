@@ -16,6 +16,9 @@ This service exposed API using Spring Boot, Spring WebFlux and Enabled cors.
 
 This is the Search Engine UI built with React JS auto-complete and CSS. It calls the Java API endpoints, renders data on the UI.
 
+![image](https://github.com/coding-nomadic/google-books-search-engine/assets/8009104/dacc88cf-17cc-4db4-8f6c-864fae0d05c3)
+
+
 
 
 
