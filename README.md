@@ -10,7 +10,7 @@ This python code internally calls this endpoint - https://www.googleapis.com/boo
 
 ## Google Books Java Service
 
-This service exposed API using Spring Boot, Spring WebFlux and Enabled cors.
+This service exposed API using Spring Boot, Spring WebFlux, Elastic search with its search feature.
 
 ## Google Books Engine UI
 
