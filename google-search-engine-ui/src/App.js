@@ -1,21 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
-import SearchComponent from './AutocompleteComponent';
 import React, { useState } from 'react';
 import axios from 'axios';
 import Autocomplete from 'react-autocomplete';
 import './AutocompleteComponent.css'; // Import custom CSS for styling
-import { lightGreen } from '@mui/material/colors';
+import config from './config';
 
-function App() {
+function AutocompleteComponent() {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState([]);
 
   function handleInputChange(value) {
     setInputValue(value);
-
+    const apiUrl = config.apiUrl;
     // Make an API call here to fetch suggestions based on the input value
-    axios.get(`http://localhost:8080/api/v1/books?search=${value}`)
+    axios.get({apiUrl}`?search=${value}`)
       .then(response => {
         setSuggestions(response.data);
       })
@@ -39,8 +36,9 @@ function App() {
           <h4 style={{
               padding: '15px',
               border: '13px solid #b4f0b4',
-              color: 'rgb(11, 167, 11)'
-
+              color: 'rgb(11, 167, 11)',
+              backgroundColor: '#282c34'
+              
           }}>
               Google Books : Find
               Details About Your Favourite Book
@@ -52,16 +50,8 @@ function App() {
       getItemValue={item => item.title}
       onChange={e => handleInputChange(e.target.value)}
       onSelect={value => handleSelectValue(value)}
-      inputProps={{
-        style: {
-            width: '300px', height: '20px',
-            background: '#e4f3f7',
-            border: '2px outset lightgray'
-        },
-        placeholder: 'Search By Name'
-    }}
       renderItem={(item, isHighlighted) => (
-        <div style={{ background: isHighlighted ?'#bcf5bc' : 'white'}}>
+        <div style={{ background: isHighlighted ?'green' : 'green'}}>
           <p>Book Name - {item.title}</p>
           <p>Author - {item.authors}</p>
           <p>Publisher - {item.publisher}</p>
@@ -74,4 +64,5 @@ function App() {
      </div>
   );
 }
-export default App;
+
+export default AutocompleteComponent;
