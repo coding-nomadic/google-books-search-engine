@@ -20,6 +20,11 @@ curl --location 'http://localhost:8080/api/v1/books?search=Harry Porter'
 curl --location 'http://localhost:8080/api/v1/books/fetchAllBooks
 ```
 
+## High Level Design for Google Books Search Engine
+
+![image](https://github.com/coding-nomadic/google-books-search-engine/assets/8009104/dc000bbb-9e62-49df-80fb-b950a7af32f2)
+
+
 ## Google Books Engine UI
 
 This is the Search Engine UI built with React JS auto-complete and CSS. It calls the Java API endpoints, renders data on the UI.
