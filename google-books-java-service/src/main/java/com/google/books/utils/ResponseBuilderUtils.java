@@ -28,7 +28,7 @@ public final class ResponseBuilderUtils {
         } catch (IOException e) {
             log.error(e.getLocalizedMessage());
         }
-        return new Book();
+        return Book.builder().build();
     }
 
     /**
@@ -49,17 +49,7 @@ public final class ResponseBuilderUtils {
      * @param hit
      * @return
      */
-    private static Book setBooks(Hit hit) {
-        Book book = new Book();
-        book.setId(hit.get_source().getId());
-        book.setAuthors(hit.get_source().getVolumeInfo().getAuthors());
-        book.setDescription(hit.get_source().getVolumeInfo().getDescription());
-        book.setCategories(hit.get_source().getVolumeInfo().getCategories());
-        book.setPublisher(hit.get_source().getVolumeInfo().getPublisher());
-        book.setPublishedDate(hit.get_source().getVolumeInfo().getPublishedDate());
-        book.setTitle(hit.get_source().getVolumeInfo().getTitle());
-        book.setSubtitle(hit.get_source().getVolumeInfo().getSubtitle());
-        book.setLanguage(hit.get_source().getVolumeInfo().getLanguage());
-        return book;
+     private static Book setBooks(Hit hit) {
+        return Book.builder().id(hit.get_source().getId()).authors(hit.get_source().getVolumeInfo().getAuthors()).description(hit.get_source().getVolumeInfo().getDescription()).categories(hit.get_source().getVolumeInfo().getCategories()).publisher(hit.get_source().getVolumeInfo().getPublisher()).publishedDate(hit.get_source().getVolumeInfo().getPublishedDate()).title(hit.get_source().getVolumeInfo().getTitle()).subtitle(hit.get_source().getVolumeInfo().getSubtitle()).language(hit.get_source().getVolumeInfo().getLanguage()).build();
     }
 }
