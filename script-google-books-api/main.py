@@ -1,69 +1,46 @@
 from config import config
+from loaders import Loaders
 
 properties_file = 'config.yml'
 
-
-# load yml file as object
 def load_configuration():
     configs = config(properties_file)
-    if configs.is_valid is False:
-        return
-    else:
-        return configs
+    if not configs.is_valid:
+        return None
+    return configs
 
+def load_and_print_books(loader_method, book_category):
+    print(f'####################### {book_category} Books #######################')
+    loader_method()
+    print(f'####################### {book_category} Books Inserted  #######################')
 
-# main executor
 def main():
-    from loaders import Loaders
-    print('####################### Best seller Books #######################')
-    Loaders.load_best_seller_books()
-    print('####################### Best seller Successfully Inserted #############')
-    print('####################### Science Books  #######################')
-    Loaders.load_subject_science_books()
-    print('####################### Science Books Inserted  #######################')
-    print('####################### Religion Books  #######################')
-    Loaders.load_subject_religion_books()
-    print('####################### Religion Books Inserted  #######################')
-    print('####################### Economic Books  #######################')
-    Loaders.load_subject_economic_books()
-    print('####################### Economic Books Inserted  #######################')
-    print('####################### Classics Books  #######################')
-    Loaders.load_subject_classics_books()
-    print('####################### Classics Books Inserted  #######################')
-    print('####################### Fantasy Books  #######################')
-    Loaders.load_subject_fantasy_books()
-    print('####################### Fantasy Books Inserted  #######################')
-    print('####################### Action Books  #######################')
-    Loaders.load_subject_action_books()
-    print('####################### Action Books Inserted  #######################')
-    print('####################### Adventure Books  #######################')
-    Loaders.load_subject_adventure_books()
-    print('####################### Adventure Books Inserted  #######################')
-    print('####################### Comic Books  #######################')
-    Loaders.load_subject_comic_books()
-    print('####################### Comic Books Inserted  #######################')
-    print('####################### Detective Books  #######################')
-    Loaders.load_subject_detective_books()
-    print('####################### Detective Books Inserted  #######################')
-    print('####################### Mystery Books  #######################')
-    Loaders.load_subject_mystery_books()
-    print('####################### Mystery Books Inserted  #######################')
-    print('####################### Fiction Books  #######################')
-    Loaders.load_subject_fiction_books()
-    print('####################### Fiction Books Inserted  #######################')
-    print('####################### Horror Books  #######################')
-    Loaders.load_subject_horror_books()
-    print('####################### Horror Books Inserted  #######################')
-    print('####################### Humour Books  #######################')
-    Loaders.load_subject_humour_books()
-    print('####################### Humour Books Inserted  #######################')
-    print('####################### Fairy Tale Books  #######################')
-    Loaders.load_subject_fairy_tales_books()
-    print('####################### Fairy Tale Books Inserted  #######################')
-    print('####################### Folk Tale Books  #######################')
-    Loaders.load_subject_folk_tales_books()
-    print('####################### Folk Tale Books Inserted  #######################')
+    app_config = load_configuration()
+    if not app_config:
+        print('Invalid configuration. Exiting...')
+        return
+    
+    categories = {
+        'Best seller': Loaders.load_best_seller_books,
+        'Science': Loaders.load_subject_science_books,
+        'Religion': Loaders.load_subject_religion_books,
+        'Economic': Loaders.load_subject_economic_books,
+        'Classics': Loaders.load_subject_classics_books,
+        'Fantasy': Loaders.load_subject_fantasy_books,
+        'Action': Loaders.load_subject_action_books,
+        'Adventure': Loaders.load_subject_adventure_books,
+        'Comic': Loaders.load_subject_comic_books,
+        'Detective': Loaders.load_subject_detective_books,
+        'Mystery': Loaders.load_subject_mystery_books,
+        'Fiction': Loaders.load_subject_fiction_books,
+        'Horror': Loaders.load_subject_horror_books,
+        'Humour': Loaders.load_subject_humour_books,
+        'Fairy Tale': Loaders.load_subject_fairy_tales_books,
+        'Folk Tale': Loaders.load_subject_folk_tales_books,
+    }
 
+    for category, loader_method in categories.items():
+        load_and_print_books(loader_method, category)
 
 if __name__ == '__main__':
     main()
