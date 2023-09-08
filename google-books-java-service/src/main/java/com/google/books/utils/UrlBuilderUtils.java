@@ -6,23 +6,29 @@ import org.springframework.web.util.UriComponentsBuilder;
 public final class UrlBuilderUtils {
 
     private UrlBuilderUtils() {
-
+        // Private constructor to prevent instantiation
     }
 
-    /**
-     * @param appConfig
-     * @param
-     * @return
-     */
     public static String getSearchBook(AppConfig appConfig, String title) {
-        return UriComponentsBuilder.newInstance().scheme(appConfig.elasticSearchDetails().getElasticProtocol()).host(appConfig.elasticSearchDetails().getElasticUrl()).port(appConfig.elasticSearchDetails().getElasticPort()).path(appConfig.elasticSearchDetails().getIndexName() + "/").path("_search?q=title=" + title).build().toString();
+        return UriComponentsBuilder.newInstance()
+                .scheme(appConfig.elasticSearchDetails().getElasticProtocol())
+                .host(appConfig.elasticSearchDetails().getElasticUrl())
+                .port(appConfig.elasticSearchDetails().getElasticPort())
+                .path(appConfig.elasticSearchDetails().getIndexName() + "/")
+                .path("_search")
+                .queryParam("q", "title=" + title)
+                .build()
+                .toString();
     }
 
-    /**
-     * @param appConfig
-     * @return
-     */
     public static String getAllBooks(AppConfig appConfig) {
-        return UriComponentsBuilder.newInstance().scheme(appConfig.elasticSearchDetails().getElasticProtocol()).host(appConfig.elasticSearchDetails().getElasticUrl()).port(appConfig.elasticSearchDetails().getElasticPort()).path(appConfig.elasticSearchDetails().getIndexName() + "/").path("_search?").build().toString();
+        return UriComponentsBuilder.newInstance()
+                .scheme(appConfig.elasticSearchDetails().getElasticProtocol())
+                .host(appConfig.elasticSearchDetails().getElasticUrl())
+                .port(appConfig.elasticSearchDetails().getElasticPort())
+                .path(appConfig.elasticSearchDetails().getIndexName() + "/")
+                .path("_search")
+                .build()
+                .toString();
     }
 }
