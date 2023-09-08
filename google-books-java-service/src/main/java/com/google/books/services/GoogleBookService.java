@@ -11,15 +11,17 @@ import java.util.List;
 @Service
 public class GoogleBookService {
 
-    @Autowired
-    private ElasticSearchClient elasticSearchClient;
+    private final ElasticSearchClient elasticSearchClient;
 
-    /** retrieves all books **/
+    @Autowired
+    public GoogleBookService(ElasticSearchClient elasticSearchClient) {
+        this.elasticSearchClient = elasticSearchClient;
+    }
+
     public Mono<List<Book>> getAllBooks() {
         return elasticSearchClient.getAllGoogleBooks();
     }
 
-    /** retrieves books by search **/
     public Mono<List<Book>> searchBooks(String title) {
         return elasticSearchClient.searchBooks(title);
     }
