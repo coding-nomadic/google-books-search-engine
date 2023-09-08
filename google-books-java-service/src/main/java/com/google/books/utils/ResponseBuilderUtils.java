@@ -17,39 +17,37 @@ public final class ResponseBuilderUtils {
     private ResponseBuilderUtils() {
     }
 
-    /**
-     * @param object
-     * @return
-     */
     public static Book prepare(Object object) {
         try {
             Optional<Response> response = Optional.ofNullable(JsonUtils.getObject(JsonUtils.toString(object), Response.class));
-            return !response.isEmpty() ? response.get().get_source() : new Book();
+            return response.map(Response::get_source).orElseGet(Book::new);
         } catch (IOException e) {
             log.error(e.getLocalizedMessage());
+            return Book.builder().build();
         }
-        return Book.builder().build();
     }
 
-    /**
-     * @param object
-     * @return
-     */
     public static List<Book> apiResponse(Object object) {
         try {
             Root response = JsonUtils.getObject(JsonUtils.toString(object), Root.class);
-            return response.getHits().getHits().stream().map(s -> setBooks(s)).collect(Collectors.toList());
+            return response.getHits().getHits().stream().map(ResponseBuilderUtils::setBooks).collect(Collectors.toList());
         } catch (IOException e) {
             log.error(e.getLocalizedMessage());
+            return new ArrayList<>();
         }
-        return new ArrayList<>();
     }
 
-    /**
-     * @param hit
-     * @return
-     */
-     private static Book setBooks(Hit hit) {
-        return Book.builder().id(hit.get_source().getId()).authors(hit.get_source().getVolumeInfo().getAuthors()).description(hit.get_source().getVolumeInfo().getDescription()).categories(hit.get_source().getVolumeInfo().getCategories()).publisher(hit.get_source().getVolumeInfo().getPublisher()).publishedDate(hit.get_source().getVolumeInfo().getPublishedDate()).title(hit.get_source().getVolumeInfo().getTitle()).subtitle(hit.get_source().getVolumeInfo().getSubtitle()).language(hit.get_source().getVolumeInfo().getLanguage()).build();
+    private static Book setBooks(Hit hit) {
+        return Book.builder()
+                .id(hit.get_source().getId())
+                .authors(hit.get_source().getVolumeInfo().getAuthors())
+                .description(hit.get_source().getVolumeInfo().getDescription())
+                .categories(hit.get_source().getVolumeInfo().getCategories())
+                .publisher(hit.get_source().getVolumeInfo().getPublisher())
+                .publishedDate(hit.get_source().getVolumeInfo().getPublishedDate())
+                .title(hit.get_source().getVolumeInfo().getTitle())
+                .subtitle(hit.get_source().getVolumeInfo().getSubtitle())
+                .language(hit.get_source().getVolumeInfo().getLanguage())
+                .build();
     }
 }
