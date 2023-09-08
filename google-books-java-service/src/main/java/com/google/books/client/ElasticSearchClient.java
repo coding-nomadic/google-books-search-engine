@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -21,30 +20,42 @@ import java.util.List;
 @Component
 @Slf4j
 public class ElasticSearchClient {
-    @Autowired
-    private AppConfig appConfig;
-    @Autowired
-    private WebClient.Builder webClientBuilder;
 
-    /**
-     * fetch all the books from elastic search DB
-     **/
-    public Mono<List<Book>> getAllGoogleBooks() {
-        final String allBooksUrl = UrlBuilderUtils.getAllBooks(appConfig);
-        return webClientBuilder.build().post().uri(allBooksUrl).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).body(Mono.just(JsonUtils.requestBodyJson("1000")), String.class).retrieve().onStatus(HttpStatus::isError, response -> {
-            log.error(String.format("Error calling Elastic API to Get All Books due to : %s", response.statusCode()));
-            return Mono.error(new BookException(response.toString(), "102"));
-        }).bodyToMono(Object.class).flatMap(response -> Mono.just(ResponseBuilderUtils.apiResponse(response)));
+    private final AppConfig appConfig;
+    private final WebClient.Builder webClientBuilder;
+
+    @Autowired
+    public ElasticSearchClient(AppConfig appConfig, WebClient.Builder webClientBuilder) {
+        this.appConfig = appConfig;
+        this.webClientBuilder = webClientBuilder;
     }
 
-    /**
-     * fetch all the books from elastic search DB
-     **/
+    public Mono<List<Book>> getAllGoogleBooks() {
+        final String allBooksUrl = UrlBuilderUtils.getAllBooks(appConfig);
+        return webClientBuilder.build()
+                .post()
+                .uri(allBooksUrl)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(Mono.just(JsonUtils.requestBodyJson("1000")), String.class)
+                .retrieve()
+                .onStatus(HttpStatus::isError, response -> handleErrorResponse("Get All Books", response))
+                .bodyToMono(Object.class)
+                .flatMap(response -> Mono.just(ResponseBuilderUtils.apiResponse(response)));
+    }
+
     public Mono<List<Book>> searchBooks(String title) {
         final String searchBooksUrl = UrlBuilderUtils.getSearchBook(appConfig, title);
-        return webClientBuilder.build().get().uri(searchBooksUrl).retrieve().onStatus(HttpStatus::isError, response -> {
-            log.error(String.format("Error calling Elastic API to Get All Searched Books due to : %s", response.statusCode()));
-            return Mono.error(new BookException(response.toString(), "102"));
-        }).bodyToMono(Object.class).flatMap(response -> Mono.just(ResponseBuilderUtils.apiResponse(response)));
+        return webClientBuilder.build()
+                .get()
+                .uri(searchBooksUrl)
+                .retrieve()
+                .onStatus(HttpStatus::isError, response -> handleErrorResponse("Get Searched Books", response))
+                .bodyToMono(Object.class)
+                .flatMap(response -> Mono.just(ResponseBuilderUtils.apiResponse(response)));
+    }
+
+    private Mono<? extends Throwable> handleErrorResponse(String operation, ClientResponse response) {
+        log.error(String.format("Error calling Elastic API to %s due to: %s", operation, response.statusCode()));
+        return Mono.error(new BookException(response.toString(), "102"));
     }
 }
